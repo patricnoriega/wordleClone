@@ -15293,6 +15293,19 @@ const dictionary = [
         "shave"
 ]
 
+const wordLength = 5
+
+const guessGrid = document.querySelector("[data-guess-grid]")
+
+const offsetFromDate = new Date(2022, 1, 28)
+
+const msOffset = Date.now() - offsetFromDate
+
+const dayOffset = msOffset / 1000 / 60 / 60/ 24
+console.log(dayOffset)
+
+const targetWord = targetWords[Math.floor(dayOffset)]
+
 startInteraction()
 
 function startInteraction() {
@@ -15339,5 +15352,29 @@ function handleKeyPress(event) {
         }
 }
 
+function pressKey(key) {
+        const activeTiles = getActiveTiles()
+        if (activeTiles.length >= wordLength) return
+        const nextTile = guessGrid.querySelector(":not([data-letter])")
+        nextTile.dataset.letter = key.toLowerCase()
+        nextTile.textContent = key
+        nextTile.dataset.state = "active"
+}
 
+function deleteKey() {
+        const activeTiles = getActiveTiles()
+        const lastTile = activeTiles[activeTiles.length - 1]
+        if (lastTile == null) return
+        lastTile.textContent = ""
+        delete lastTile.dataset.state
+        delete lastTile.dataset.letter
+}
+
+function submitGuess() {
+        const activeTiles = [..getActiveTiles()]
+}
+
+function getActiveTiles() {
+        return guessGrid.querySelectorAll('[data-state= "active"]')
+}
 
